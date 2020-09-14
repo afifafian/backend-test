@@ -5,12 +5,13 @@ const jwt = require("jsonwebtoken");
 class UserController {
     static fetchUser (req, res , next) {
         User.findAll()
-        .then((data) => {
-            let userData = {}
-            data.forEach(e => {
-                userData.username = e.username
-                userData.address = e.address
-            });
+        .then((users) => {
+            let userData = users.map((user) => {
+                return {
+                    username: user.username,
+                    address: user.address
+                }
+            })
             return res.status(200).json(userData)
         })
         .catch((err) => {
